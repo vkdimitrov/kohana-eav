@@ -6,7 +6,7 @@ $readonly = $attribute->loaded() ? array("readonly" => "readonly") : array();
 ?>
 <div class="container">
 	<div class="col-md-12">
-		<h1><?= ($attribute->loaded() ? __('Edit Attribute') : __('New Attribute')) ?> | <a href="/admin/entities/attributes"><?= __('Attributes') ?></a></h1>
+		<h1><a href="/eav"><?= __('Back') ?></a> | <?= ($attribute->loaded() ? __('Edit Attribute') : __('New Attribute')) ?></h1>
 		<form class="form-horizontal" method="post" role="form">
 			<?php
 			if (isset($attribute) and ($attribute->name != ""))
@@ -169,7 +169,7 @@ $readonly = $attribute->loaded() ? array("readonly" => "readonly") : array();
 			<div class="form-group">
 				<label for="attribute_type" class="col-sm-2 control-label"><?= __('Attribute Type') ?></label>
 				<div class="col-sm-3">
-					<div class="col-sm-offset-2 col-sm-10">
+<!-- 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="checkbox">
 							<label>
 								<?= Form::checkbox("use_in_company", "1", (isset($attribute) && $attribute->use_in_company), array("class" => "attribute-settings")) ?> <?= __('Attribute Use In Company') ?>
@@ -245,7 +245,7 @@ $readonly = $attribute->loaded() ? array("readonly" => "readonly") : array();
 								<?= Form::error("use_in_reporting", $errors); ?>
 							</label>
 						</div>
-					</div>
+					</div> -->
 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="checkbox">
 							<label>
@@ -254,22 +254,22 @@ $readonly = $attribute->loaded() ? array("readonly" => "readonly") : array();
 							</label>
 						</div>
 					</div>
-					<div class="col-sm-offset-2 col-sm-10">
+<!-- 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="checkbox">
 							<label>
 								<?= Form::checkbox("use_in_sorting", "1", (isset($attribute) && $attribute->use_in_sorting), array("class" => "attribute-settings")) ?> <?= __('Attribute Use In Sorting') ?>
 								<?= Form::error("use_in_sorting", $errors); ?>
 							</label>
 						</div>
-					</div>
-					<div class="col-sm-offset-2 col-sm-10">
+					</div> -->
+<!-- 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="checkbox">
 							<label>
 								<?= Form::checkbox("show_in_view", "1", (isset($attribute) && $attribute->show_in_view), array("class" => "attribute-settings")) ?> <?= __('Attribute Show In View') ?>
 								<?= Form::error("show_in_view", $errors); ?>
 							</label>
 						</div>
-					</div>
+					</div> -->
 
 				</div>
 			</div>

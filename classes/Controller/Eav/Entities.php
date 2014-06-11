@@ -18,8 +18,9 @@ class Controller_Eav_Entities extends Controller_Eav {
 	{
 		$entity_name = $this->request->param('id');
 		$entity = ORM::factory($entity_name);
-		$set = $entity->get_set();
-		$sets = $set->find_all();
+		$set_name = $entity->set->get_name();
+		$set = ORM::factory($set_name);
+		$sets = ORM::factory($set_name)->find_all();
 		$errors = array();
 		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
 /*		Debug::output($all_attributes,1);
@@ -34,11 +35,11 @@ class Controller_Eav_Entities extends Controller_Eav {
 				$db->begin();
 				$set->create_set($data);
 				$db->commit();
-				$this->redirect(URL::base(true, true) . '/eav_entities/index');
+				$this->redirect(URL::base(true, true) . '/eav_entities/index/'.$entity_name);
 			} catch (ORM_Validation_Exception $ex)
 			{
 				$db->rollback();
-				$errors = $ex->errors('models');
+				var_dump($errors);
 			} catch (Database_Exception $ex)
 			{
 				$db->rollback();
@@ -47,8 +48,9 @@ class Controller_Eav_Entities extends Controller_Eav {
 		}
 
 		$this->template->content = View::factory('UI/entities/form', array(
+					'set_name' => $set_name,
 					'set' => $set,
-					'sets' => array(NULL => 'Няма') + $sets->as_array('id', 'name'),
+					'sets' => array(NULL => 'None') + $sets->as_array('id', 'name'),
 					'all_attributes' => $all_attributes,
 					'set_attributes' => array(),
 					'entity' => $entity_name,
@@ -57,13 +59,15 @@ class Controller_Eav_Entities extends Controller_Eav {
 
 	public function action_edit()
 	{
-		$entity = 'EAV_'.ucfirst($this->request->param('argv'));
-		$set = ORM::factory($entity.'_Set', $this->request->param('id'));
-		$sets = ORM::factory($entity.'_Set')->find_all();
+		$set_id = $this->request->param('argv');
+		$set_name = $this->request->param('id');
+		$set = ORM::factory($set_name, $set_id);
+		$sets = ORM::factory($set_name)->find_all();
+		$entity_name = substr($set_name, 0, -4);
 		$errors = array();
 		
-		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
-		#$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array('id', 'label');
+		#$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
+		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array('id', 'label');
 		$set_attributes = $set->attributes->find_all()->as_array('id', 'label');
 
 		if ($this->valid_post)
@@ -75,13 +79,11 @@ class Controller_Eav_Entities extends Controller_Eav {
 				$db->begin();
 				$set->update_set($data);
 				$db->commit();
-				Message::push(__("You have Successfuly edited: {$set->name}"), Message::SUCCESS);
 				$set_attributes = $set->attributes->find_all()->as_array('id', 'label');
 			} catch (ORM_Validation_Exception $ex)
 			{
 				$db->rollback();
 				$errors = $ex->errors('models');
-				Debug::output($errors, 1);
 			} catch (Database_Exception $ex)
 			{
 				$db->rollback();
@@ -90,11 +92,13 @@ class Controller_Eav_Entities extends Controller_Eav {
 		}
 
 		$this->template->content = View::factory('UI/entities/form', array(
+					'set_name' => $set_name,
 					'set' => $set,
 					'sets' => array(NULL => 'Няма') + $sets->as_array('id', 'name'),
 					'errors' => $errors,
 					'all_attributes' => $all_attributes,
 					'set_attributes' => $set_attributes,
+					'entity' => $entity_name,
 		));
 	}
 

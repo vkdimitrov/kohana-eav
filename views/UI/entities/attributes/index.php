@@ -40,7 +40,7 @@
 						<td><?= $attribute->unique ?></td>
 						<td><?= $attribute->obligatory ?></td>
 						<td><?= $attribute->show_in_listing ?></td>
-						<td><?= HTML::anchor('admin/entities/attributes/delete/' . $attribute->id, '<span class="glyphicon glyphicon-trash"></span>', array('onClick' => 'return confirm("Are you sure?")')) ?></td>
+						<td><?= HTML::anchor('admin/entities/attributes/delete/' . $attribute->id, '', array('onClick' => 'return confirm("Are you sure?")')) ?></td>
 					</tr>
 					<?php
 				endforeach;

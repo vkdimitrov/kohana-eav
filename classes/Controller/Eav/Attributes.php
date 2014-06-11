@@ -25,7 +25,7 @@ class Controller_Eav_Attributes extends Controller_Eav {
 			{
 				$attribute->values($data, $attribute->expected());
 				$attribute->save();
-				$this->redirect('/eav_attributes/edit/' . $attribute->id);
+				$this->redirect('/eav');
 			} catch (ORM_Validation_Exception $ex)
 			{
 				$errors = $ex->errors('models');

@@ -36,7 +36,7 @@ class Model_EAV_Core_Set extends ORM {
 			$data['comment'] = NULL;
 		}
 		
-		$this->values($data, array('name', 'parent_set_id'));
+		$this->values($data, array('name', 'parent_set_id', 'comment'));
 		$this->save();
 
 		if (isset($data['attributes']))
@@ -89,7 +89,7 @@ class Model_EAV_Core_Set extends ORM {
 		else
 		{
 			DB::delete($this->_has_many['attributes']['through'])->where(Inflector::singular($this->table_name()) . '_id', '=', $this->id)->execute();
-			Debug::output(Database::instance()->last_query);
+			//Debug::output(Database::instance()->last_query);
 		}
 	}
 

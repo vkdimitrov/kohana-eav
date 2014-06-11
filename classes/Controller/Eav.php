@@ -18,11 +18,12 @@ class Controller_Eav extends Kohana_Controller_Template {
 		//load entities, every entity can be a type of attribute
 		$entities_names = ORM::factory('EAV_Attribute_Type')->where('class', '<>', 'NULL')->find_all()->as_array();
 		$entities = array();
+		$attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
 		foreach ($entities_names as $entity_name)
 		{
 			array_push($entities, ORM::factory($entity_name->class));
 		}
-		$this->template->content = View::factory('UI/index', array('entities' => $entities));
+		$this->template->content = View::factory('UI/index', array('entities' => $entities, 'attributes' => $attributes));
 	}
 
 	public function action_new() 
