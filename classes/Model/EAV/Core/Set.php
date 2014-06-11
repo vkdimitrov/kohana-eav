@@ -10,7 +10,6 @@ defined('SYSPATH') or die('No direct script access.');
  */
 class Model_EAV_Core_Set extends ORM {
 
-	protected $_visual_dataset = array();
 	
 	public function rules()
 	{
@@ -36,13 +35,8 @@ class Model_EAV_Core_Set extends ORM {
 		{
 			$data['comment'] = NULL;
 		}
-
-		if (isset($data['eav_country_id']))
-		{
-			array_push($expected, 'eav_country_id');
-		}
 		
-		$this->values($data, array('name', 'parent_set_id', 'eav_country_id'));
+		$this->values($data, array('name', 'parent_set_id'));
 		$this->save();
 
 		if (isset($data['attributes']))
@@ -279,15 +273,7 @@ class Model_EAV_Core_Set extends ORM {
 	 */
 	public function unique_name($name)
 	{
-		//edit
-		if ($this->id !== NULL AND $this->name == $name)
-			return TRUE;
-		//new
-		$result = ORM::factory('EAV_Company_Set')->where('name', '=', $name)->find();
-		if ($result->loaded())
-			return FALSE;
-		else
-			return TRUE;
+		return TRUE;
 	}
 
 }

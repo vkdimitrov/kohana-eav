@@ -1,10 +1,12 @@
 <?php
 defined('SYSPATH') or die('No direct script access.');
+$set_name = $entity->get_set()->get_name();
+$entity_name =  $entity->get_name();
 ?>
 <div class="container">
 	<div class="col-md-12">
-		<h1><?= $entity ?> | <?= HTML::anchor("/eav_entities/new/${entity}", __('New')) ?></h1>
-		<table >
+		<h1><?= HTML::anchor("/eav", __('Back')) ?> | <?= $set_name ?> | <?= HTML::anchor("/eav_entities/new/${entity_name}", __('New')) ?></h1>
+		<table border="1">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -17,9 +19,9 @@ defined('SYSPATH') or die('No direct script access.');
 				foreach ($sets as $set) :
 					?>
 					<tr>
-						<td><a href="/admin/entities/<?= $controller ?>/edit/<?= $set->id ?>"><b><?= $set->name ?></b></a></td>
+						<td><a href="/eav_entities/edit/<?=$set->name?>/<?= $set->id ?>"><b><?= $set->name ?></b></a></td>
 						<td><?= $set->parent->loaded() ? $set->parent->name : 'none' ?></td>
-						<td><a href="/admin/entities/<?= $controller ?>/delete/<?= $set->id ?>" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash"></span></a></td>
+						<td class="center"><a href="/eav_entities/delete/<?= $set->id ?>" onclick="return confirm('Are you sure?')">X</a></td>
 					</tr>
 					<?php
 				endforeach;

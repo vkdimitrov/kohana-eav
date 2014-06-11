@@ -10,8 +10,7 @@ $singular_nomenclature = ucfirst(substr($entity, 4));
 
 <div class="container">
 	<div class="col-md-12">		
-		<h1><?= ucfirst($singular_nomenclature) ?>
-			 | <?= HTML::anchor("/eav_entities/index/{$entity}", $entity) ?></h1>
+		<h1><?= HTML::anchor("/eav_entities/index/{$entity}", 'Back') ?> | <?= ucfirst($singular_nomenclature) ?></h1>
 		<form class="form-horizontal" method="post" role="form">
 			<div class="form-group<?= Form::has_error('name', $errors) ? ' has-error' : null ?>">
 				<label for="<?= $singular_nomenclature ?>_name" class="col-sm-2 control-label"><?= __(ucfirst($singular_nomenclature) . ' Identifier') ?></label>

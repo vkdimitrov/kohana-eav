@@ -2,13 +2,11 @@
 
 class Controller_Eav_Entities extends Controller_Eav {
 
-	protected $main_model = 'EAV_Money_Set';
-	protected $filter_fields = array('name');
-
 	public function action_index()
 	{
-		$entity = $this->request->param('id');
-		$sets = ORM::factory($entity.'_Set')->find_all();
+		$entity_name = $this->request->param('id');
+		$entity = ORM::factory($entity_name);
+		$sets = ORM::factory($entity->set->get_name())->find_all();
 
 		$this->template->content = View::factory('UI/entities/index', array(
 					'entity' => $entity,
@@ -18,8 +16,9 @@ class Controller_Eav_Entities extends Controller_Eav {
 
 	public function action_new()
 	{
-		$entity = $this->request->param('id');
-		$set = ORM::factory($entity.'_Set');
+		$entity_name = $this->request->param('id');
+		$entity = ORM::factory($entity_name);
+		$set = $entity->get_set();
 		$sets = $set->find_all();
 		$errors = array();
 		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
@@ -35,7 +34,7 @@ class Controller_Eav_Entities extends Controller_Eav {
 				$db->begin();
 				$set->create_set($data);
 				$db->commit();
-				$this->redirect(URL::base(true, true) . 'admin/entities/' . $this->controller . '/edit/' . $set->id);
+				$this->redirect(URL::base(true, true) . '/eav_entities/index');
 			} catch (ORM_Validation_Exception $ex)
 			{
 				$db->rollback();
@@ -52,19 +51,20 @@ class Controller_Eav_Entities extends Controller_Eav {
 					'sets' => array(NULL => 'Няма') + $sets->as_array('id', 'name'),
 					'all_attributes' => $all_attributes,
 					'set_attributes' => array(),
-					'entity' => $entity,
+					'entity' => $entity_name,
 		));
 	}
 
 	public function action_edit()
 	{
-		$set = ORM::factory('EAV_Money_Set', $this->request->param('id'));
-		$sets = ORM::factory('EAV_Money_Set')->find_all();
+		$entity = 'EAV_'.ucfirst($this->request->param('argv'));
+		$set = ORM::factory($entity.'_Set', $this->request->param('id'));
+		$sets = ORM::factory($entity.'_Set')->find_all();
 		$errors = array();
-
-		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array('id', 'label');
+		
+		$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array();
+		#$all_attributes = ORM::factory('EAV_Attribute')->find_all()->as_array('id', 'label');
 		$set_attributes = $set->attributes->find_all()->as_array('id', 'label');
-		$countries = EAV::as_array_attr(EAV::factory('EAV_Country')->find_all(), 'id', 'country_name');
 
 		if ($this->valid_post)
 		{
@@ -89,13 +89,12 @@ class Controller_Eav_Entities extends Controller_Eav {
 			}
 		}
 
-		$this->template->content = View::factory('admin/entities/form', array(
+		$this->template->content = View::factory('UI/entities/form', array(
 					'set' => $set,
 					'sets' => array(NULL => 'Няма') + $sets->as_array('id', 'name'),
 					'errors' => $errors,
 					'all_attributes' => $all_attributes,
 					'set_attributes' => $set_attributes,
-					'countries' => $countries,
 		));
 	}
 

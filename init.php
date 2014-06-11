@@ -6,8 +6,14 @@ Route::set('eav','(/<controller>(/<action>(/<id>)))')
 		'action'     => 'index',
 	));
 
-Route::set('eav_entities','(/<controller>(/<action>(/<id>)))')
+Route::set('eav_entities','(/<controller>(/<action>(/<id>)(/<argv>)))')
 	->defaults(array(
 		'controller' => 'eav_entities',
+		'action'     => 'index',
+	));
+
+Route::set('eav_attributes','(/<controller>(/<action>(/<id>)))')
+	->defaults(array(
+		'controller' => 'eav_attributes',
 		'action'     => 'index',
 	));

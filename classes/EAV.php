@@ -391,6 +391,25 @@ class EAV extends ORM {
 	}
 
 	/**
+	 * Get eav entity name 
+	 * @return string eav_entity name
+	 */
+	public function get_name()
+	{
+		$parts = explode("_", $this->_object_name);
+		$name = NULL;
+		foreach ($parts as $part)
+		{
+			if ($part == 'eav')
+				$part = 'EAV';
+			
+			$name .= ucfirst($part).'_';
+		}
+		$name = rtrim($name, "_");
+		return $name;
+	}
+
+	/**
 	 * Search for eav objects in following relation operator($attr, $value)
 	 * @param string $attr
 	 * @param string $operator

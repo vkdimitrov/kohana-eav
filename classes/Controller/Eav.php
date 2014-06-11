@@ -6,8 +6,6 @@ class Controller_Eav extends Kohana_Controller_Template {
 
 	public $valid_post = FALSE;
 
-	protected $view;
-
 	public function before() 
 	{
 		if ($this->request->method() == HTTP_Request::POST && Valid::not_empty($this->request->post()))
@@ -17,12 +15,13 @@ class Controller_Eav extends Kohana_Controller_Template {
 
 	public function action_index() 
 	{
-		$entities = ORM::factory('EAV_Attribute_Type')->where('class', '<>', 'NULL')->find_all()->as_array();
-		/*
-		$this->view = new View('flexiblemigrations/index');
-		$this->view->set_global('migrations', $migrations);
-		$this->view->set_global('migrations_runned', $migrations_runned);
-		*/
+		//load entities, every entity can be a type of attribute
+		$entities_names = ORM::factory('EAV_Attribute_Type')->where('class', '<>', 'NULL')->find_all()->as_array();
+		$entities = array();
+		foreach ($entities_names as $entity_name)
+		{
+			array_push($entities, ORM::factory($entity_name->class));
+		}
 		$this->template->content = View::factory('UI/index', array('entities' => $entities));
 	}
 
