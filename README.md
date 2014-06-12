@@ -1,3 +1,4 @@
+###In cooperation with [plazarov](https://github.com/plazarov)
 
 # Requirements
 * [Kohana ORM module] (https://github.com/kohana/orm)
